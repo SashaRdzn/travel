@@ -3,7 +3,6 @@ from django.db import models
 
 class Category(models.Model):
     title = models.CharField(max_length=50, verbose_name="Категория")
-
     def __str__(self):
         return self.title
 
@@ -53,3 +52,14 @@ class CardImage(models.Model):
                 is_main=False
             )
         super().save(*args, **kwargs)
+
+
+class County(models.Model):
+    title = models.CharField(max_length=50, verbose_name="Страна")
+    description = models.TextField(verbose_name="Описание страны")
+    cards = models.ManyToManyField(
+        Card, related_name="counties", blank=True, verbose_name="Карточки"
+    )
+
+    def __str__(self):
+        return f"Страна-{self.title}"

@@ -1,8 +1,8 @@
 from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Category, Card, CardImage
-from .serializers import CategorySerializer, CardSerializer, CardImageSerializer
+from .models import Category, Card, CardImage, County
+from .serializers import CategorySerializer, CardSerializer, CardImageSerializer, CountySerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -43,3 +43,23 @@ class CardImageViewSet(
 
     def get_serializer_context(self):
         return {"card_id": self.kwargs["card_pk"]}
+
+
+class CountyViewSet(viewsets.ModelViewSet):
+    queryset = County.objects.prefetch_related("cards").all()
+    serializer_class = CountySerializer
+
+    @action(detail=True, methods=["post", "delete"], url_path="cards/(?P<card_id>\d+)")
+    def manage_card(self, request, pk=None, card_id=None):
+        county = self.get_object()
+        try:
+            card = Card.objects.get(pk=card_id)
+        except Card.DoesNotExist:
+            return Response({"error": "Card not found"}, status=404)
+
+        if request.method == "POST":
+            county.cards.add(card)
+            return Response({"status": "card added"})
+        elif request.method == "DELETE":
+            county.cards.remove(card)
+            return Response({"status": "card removed"})

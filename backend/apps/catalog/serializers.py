@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Card, CardImage
+from .models import Category, Card, CardImage, County
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -64,4 +64,40 @@ class CardSerializer(serializers.ModelSerializer):
             for image_data in images_data:
                 CardImage.objects.create(card=instance, **image_data)
 
+        return instance
+
+
+class CountySerializer(serializers.ModelSerializer):
+    # For reading - show full card data
+    cards = CardSerializer(many=True, read_only=True)
+
+    # For writing - accept card IDs
+    card_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Card.objects.all(),
+        source="cards",
+        write_only=True,
+        required=False,
+    )
+
+    class Meta:
+        model = County
+        fields = ["id", "title", "description", "cards", "card_ids"]
+
+    def create(self, validated_data):
+        cards_data = validated_data.pop("cards", [])
+        county = County.objects.create(**validated_data)
+        county.cards.set(cards_data)
+        return county
+
+    def update(self, instance, validated_data):
+        cards_data = validated_data.pop("cards", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if cards_data is not None:
+            instance.cards.set(cards_data)
+
+        instance.save()
         return instance

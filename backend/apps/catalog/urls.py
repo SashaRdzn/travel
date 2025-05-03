@@ -1,12 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CategoryViewSet, CardViewSet, CardImageViewSet
+from .views import CategoryViewSet, CardViewSet, CardImageViewSet, CountyViewSet
 
 app_name = "catalog"
 
 router = DefaultRouter()
 router.register(r"categories", CategoryViewSet, basename="category")
 router.register(r"cards", CardViewSet, basename="card")
+router.register(r"country", CountyViewSet, basename="country")
+
 router.register(
     r"cards/(?P<card_pk>\d+)/images", CardImageViewSet, basename="cardimage"
 )
