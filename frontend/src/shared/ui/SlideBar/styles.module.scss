@@ -1,0 +1,27 @@
+
+.sidebar {
+    position: fixed;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &__open {
+    }
+
+    &__close {
+        align-self: flex-end;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    &__content {
+        flex: 1;
+        overflow-y: auto;
+    }
+}

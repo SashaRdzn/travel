@@ -1,6 +1,6 @@
 
 
-function Catalog() {
+function Country() {
   return (
     <div>
       catalog
@@ -8,4 +8,4 @@ function Catalog() {
   )
 }
 
-export default Catalog
+export default Country

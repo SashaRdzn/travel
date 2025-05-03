@@ -1,20 +1,7 @@
-.header {
-    position: sticky;
-    top: 0;
-    margin-top: 2rem;
-    z-index: 10;
-    padding: 0.5rem;
-    border-radius: 16px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
-
 .navigate {
     display: flex;
-    gap: 1rem;
-
+    flex-direction: column;
+    min-height: 100vh;
     &__link {
         color: red;
         text-decoration: none;

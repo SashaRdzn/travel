@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../Layout/Layout";
-import Catalog from "../../pages/Catalog/Catalog";
+import Country from "../../pages/Country/Country";
 import Profile from "../../pages/Profile/Profile";
 import RegPage from "../../pages/Auth/RegPage/RegPage";
 import LogPage from "../../pages/Auth/LogPage/LogPage";
@@ -11,8 +11,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/catalog",
-        element: <Catalog />,
+        path: "/country",
+        element: <Country />,
       },
       {
         path: "/profile",

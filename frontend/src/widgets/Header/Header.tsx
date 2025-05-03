@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import styles from './styles.module.scss'
+import SlideBar from "../../shared/ui/SlideBar/SlideBar";
 const Header = () => {
   return (
-    <header className={styles.header}>
-      <nav className={styles.navigate}>
-        <Link className={styles.navigate__link} to={"catalog"}>
-          Catalog
+    <SlideBar position="left" width="280px">
+      <header className={styles.navigate}>
+        <Link className={styles.navigate__link} to={"country"}>
+          country
         </Link>
         <Link className={styles.navigate__link} to={"profile"}>
           Profile
         </Link>
-      </nav>
-    </header>
+      </header>
+    </SlideBar>
   );
 };
 
