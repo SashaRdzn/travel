@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./styles.module.scss";
+import arrow from "../../../../public/svgs/Arrow.svg";
 
 type Position = "left" | "right" | "top" | "bottom";
 
@@ -35,7 +36,7 @@ const SlideBar = ({
       borderRadius: "50%",
       boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
       zIndex: 1001,
-      transition: "all 0.3s ease",
+      transition: "transform 0.3s ease",
     };
 
     switch (position) {
@@ -49,9 +50,9 @@ const SlideBar = ({
       case "right":
         return {
           ...baseStyles,
-          left: "10px",
+          left: "-10px",
           top: "20px",
-          transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+          transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
         };
       case "top":
         return {
@@ -65,7 +66,7 @@ const SlideBar = ({
           ...baseStyles,
           top: "-10px",
           left: "50%",
-          transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+          transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
         };
       default:
         return baseStyles;
@@ -73,36 +74,31 @@ const SlideBar = ({
   };
 
   const ArrowIcon = () => (
-    <span
+    <img
+      src={arrow}
+      alt="arrow"
       style={{
-        color:'white',
-        background:'black',
-        display: "inline-block",
-        transform:
-          position === "left" || position === "right"
-            ? "rotate(180deg)"
-            : "rotate(90deg)",
-      }}>
-      {position === "left" ? ">" : "<"}
-    </span>
+        width: "12px",
+        height: "12px",
+        transition: "transform 0.3s ease",
+      }}
+    />
   );
 
   return (
-    <>
-      <div
-        className={`${styles.sidebar} ${isOpen ? styles["sidebar__open"] : ""}`}
-        style={{
-          [position]: isOpen ? "0" : `-280px`,
-          width: position === "left" || position === "right" ? width : "100vw",
-          height:
-            position === "top" || position === "bottom" ? height : "100vh",
-        }}>
-        <div onClick={toggleSidebar} style={getArrowStyles()}>
-          <ArrowIcon />
-        </div>
-        <div className={styles.sidebar__content}>{children}</div>
+    <div
+      className={`${styles.sidebar} ${isOpen ? styles["sidebar__open"] : ""}`}
+      style={{
+        [position]: isOpen ? "0" : `calc(-${width} + 20px)`,
+        width: position === "left" || position === "right" ? width : "100vw",
+        height: position === "top" || position === "bottom" ? height : "100vh",
+        transition: "all 0.3s ease",
+      }}>
+      <div onClick={toggleSidebar} style={getArrowStyles()}>
+        <ArrowIcon />
       </div>
-    </>
+      <div className={styles.sidebar__content}>{children}</div>
+    </div>
   );
 };
 

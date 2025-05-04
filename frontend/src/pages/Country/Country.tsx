@@ -1,11 +1,11 @@
-
+import CountryList from "../../features/Country/ui/CountryList";
 
 function Country() {
   return (
-    <div>
-      catalog
-    </div>
-  )
+    <>
+      <CountryList />
+    </>
+  );
 }
 
-export default Country
+export default Country;

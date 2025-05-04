@@ -7,7 +7,7 @@ type User = {
 
 export class AuthService {
   static async login(email: string, password: string): Promise<User> {
-    // Реальная реализация будет делать запрос к API
+    
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({ email, password });
