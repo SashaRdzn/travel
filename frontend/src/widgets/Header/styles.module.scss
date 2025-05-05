@@ -3,11 +3,12 @@
     flex-direction: column;
 
     &__link {
-        color: red;
+        color: green;
         text-decoration: none;
 
         &:hover {
             text-decoration: underline;
+            color: green;
         }
     }
 }

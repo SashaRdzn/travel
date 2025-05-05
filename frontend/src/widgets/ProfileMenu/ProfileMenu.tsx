@@ -1,9 +1,10 @@
+import { memo } from "react";
 import SlideBar from "../../shared/ui/SlideBar/SlideBar";
 import styles from "./styles.module.scss";
 
-const ProfileMenu = () => {
+const ProfileMenu = memo(() => {
   return (
-    <SlideBar position="right" width="280px">
+    <SlideBar id="secondary-sidebar" position="right" width="280px">
       <div className={styles.profile}>
         <div className={styles.avatar}>AV</div>
         <h3 className={styles.username}>Иван Иванов</h3>
@@ -11,6 +12,6 @@ const ProfileMenu = () => {
       </div>
     </SlideBar>
   );
-};
+})
 
 export default ProfileMenu;
