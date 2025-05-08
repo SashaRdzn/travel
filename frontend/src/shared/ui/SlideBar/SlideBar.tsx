@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import styles from "./styles.module.scss";
 import arrow from "../../../../public/svgs/Arrow.svg";
-import { useSlideBarStore } from "../../../core/Store/slideBar";
+import { useSlideBarStore } from "../../../core/Store/slideBarStore";
 
 type Position = "left" | "right" | "top" | "bottom";
 

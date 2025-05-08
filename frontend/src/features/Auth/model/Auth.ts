@@ -1,25 +1,22 @@
-// src/features/Auth/model/Auth.ts
-type User = {
-  email: string;
-  password: string;
-  name?: string;
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { User } from "../types";
+import { useAuth } from "../../../core/Store/authStore";
+
+export const useRegister = () => {
+  const { setUser, setToken } = useAuth();
+  return useMutation({
+    mutationFn: async (data) => {
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL_AUTH}register/`,
+        data
+      );
+      return response.data as { user: User; token: string };
+    },
+    onSuccess: (data) => {
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem("token", data.token);
+    },
+  });
 };
-
-export class AuthService {
-  static async login(email: string, password: string): Promise<User> {
-    
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ email, password });
-      }, 1000);
-    });
-  }
-
-  static async register(user: User): Promise<User> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(user);
-      }, 1000);
-    });
-  }
-}

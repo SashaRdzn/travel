@@ -1,6 +1,5 @@
-// src/features/Auth/ui/LogForm/LogForm.tsx
 import { useState } from "react";
-import { AuthService } from "../../model/Auth";
+import { useRegister } from "../../model/Auth";
 import styles from "./styles.module.scss";
 
 const LogForm = () => {
@@ -15,9 +14,8 @@ const LogForm = () => {
     setError("");
 
     try {
-      const user = await AuthService.login(email, password);
-      console.log("Logged in:", user);
-      // Здесь можно добавить редирект или обновление состояния приложения
+      // const user = await AuthService.login(email, password);
+      // console.log("Logged in:", user);
     } catch (err) {
       setError("Invalid email or password");
     } finally {

@@ -1,0 +1,248 @@
+.container {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.card {
+    max-width: 32rem;
+    width: 100%;
+    background: rgba(37, 41, 37, 0.95);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 20px rgba(4, 100, 47, 0.3);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.header {
+    text-align: center;
+}
+
+.title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #e0f2fe;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.subtitle {
+    margin-top: 0.5rem;
+    color: #93c5fd;
+    font-style: italic;
+}
+
+.form {
+    margin-top: 2rem;
+}
+
+.inputGroup {
+    margin-bottom: 1.5rem;
+}
+
+.inputContainer {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #93c5fd;
+    transition: color 0.3s ease;
+}
+
+.input {
+    width: 86%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    background: rgba(55, 65, 81, 0.7);
+    border: 2px solid transparent;
+    border-radius: 0.75rem;
+    color: #e0f2fe;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+}
+
+.inputError {
+    border-color: #ef4444;
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.errorText {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #f87171;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #93c5fd;
+
+    &:hover {
+        color: #e0f2fe;
+    }
+}
+
+.passwordStrength {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.strengthBar {
+    height: 0.3rem;
+    flex: 1;
+    border-radius: 9999px;
+    transition: background-color 0.3s ease;
+}
+
+.strengthBarActive {
+    background: linear-gradient(90deg, #10b981, #22d3ee);
+}
+
+.strengthBarInactive {
+    background: #4b5563;
+}
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.checkbox {
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 0.3rem;
+    border: 2px solid #4b5563;
+    background: #374151;
+    accent-color: #3b82f6;
+}
+
+.checkboxLabel {
+    margin-left: 0.75rem;
+    font-size: 0.875rem;
+    color: #d1d5db;
+}
+
+.link {
+    color: #60a5fa;
+    font-weight: 600;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #93c5fd;
+    }
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.submitButtonActive {
+    background: linear-gradient(90deg, #1a1a1a, #6cee01);
+    color: white;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+
+    &:hover {
+    background: linear-gradient(90deg, #1a1a1a, #6cee01);
+        transform: translateY(-2px);
+    }
+}
+
+.submitButtonDisabled {
+    background: #4b5563;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.footer {
+    text-align: center;
+    color: #93c5fd;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.loadingSpinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-right: 0.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
