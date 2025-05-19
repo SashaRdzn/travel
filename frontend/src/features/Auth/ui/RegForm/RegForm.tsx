@@ -14,13 +14,13 @@ interface FormData {
 }
 
 const RegForm = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData]:any = useState<FormData>({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
- const { mutate: register, isPending } = useRegister();
+ const { mutate: register } = useRegister();
  const user = useAuth((state) => state.user);
  console.log(user);
  
@@ -50,7 +50,7 @@ const RegForm = () => {
       const { name, value, type, checked } = e.target;
       const newValue = type === "checkbox" ? checked : value;
 
-      setFormData((prev) => ({
+      setFormData((prev:any) => ({
         ...prev,
         [name]: newValue,
       }));
@@ -223,7 +223,3 @@ const RegForm = () => {
 };
 
 export default memo(RegForm);
-function useAuthStore(arg0: (state: any) => any) {
-  throw new Error("Function not implemented.");
-}
-

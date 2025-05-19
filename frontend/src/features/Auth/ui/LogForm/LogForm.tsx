@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRegister } from "../../model/Auth";
 import styles from "./styles.module.scss";
 
 const LogForm = () => {
