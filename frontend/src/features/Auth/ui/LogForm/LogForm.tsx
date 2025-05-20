@@ -1,61 +1,126 @@
-import { useState } from "react";
-import styles from "./styles.module.scss";
+import { Link } from "react-router-dom";
+import { useState, useCallback, memo, useMemo, ChangeEvent } from "react";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import styles from "../RegForm/styles.module.scss";
+import { InputField } from "../RegForm/ui/InputField";
+import { useLogin } from "../../model/Auth";
+import { FormData } from "../../types";
 
 const LogForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState<FormData>({
+    email: "QWE@QWE.ru",
+    password: "ZXCzxc123!",
+  });
+  const { mutate: login } = useLogin();
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
 
-    try {
-      // const user = await AuthService.login(email, password);
-      // console.log("Logged in:", user);
-    } catch (err) {
-      setError("Invalid email or password");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleTogglePassword = useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
+
+      try {
+        await login(formData);
+      } catch (error: any) {
+        if (error.response?.data?.errors) {
+          setErrors(error.response.data.errors);
+        } else {
+          console.error("Login error:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formData, login]
+  );
+
+  const isSubmitDisabled = useMemo(() => {
+    return loading || !formData.email || !formData.password;
+  }, [loading, formData.email, formData.password]);
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>Login</h2>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <h2>Вход</h2>
+        </div>
 
-      {error && <div className={styles.error}>{error}</div>}
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <InputField
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Ваш email"
+            icon={FaEnvelope}
+            error={errors.email}
+            value={formData.email}
+            onChange={handleInputChange}
+          />
 
-      <div className={styles.field}>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <InputField
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Ваш пароль"
+            icon={FaLock}
+            error={errors.password}
+            value={formData.password}
+            onChange={handleInputChange}
+            showPassword={showPassword}
+            onTogglePassword={handleTogglePassword}
+          />
+
+          <button
+            type="submit"
+            disabled={isSubmitDisabled}
+            className={`${styles.submitButton} ${
+              isSubmitDisabled
+                ? styles.submitButtonDisabled
+                : styles.submitButtonActive
+            }`}>
+            {loading ? (
+              <span className={styles.loadingSpinner}>
+                <svg className={styles.spinner} viewBox="0 0 24 24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                </svg>
+                Входим...
+              </span>
+            ) : (
+              "Войти"
+            )}
+          </button>
+
+          <p className={styles.footer}>
+            Нет аккаунта?
+            <Link to="/auth/register" className={styles.link}>
+              Зарегистрироваться
+            </Link>
+          </p>
+        </form>
       </div>
-
-      <div className={styles.field}>
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-        />
-      </div>
-
-      <button type="submit" className={styles.submitButton} disabled={loading}>
-        {loading ? "Loading..." : "Sign In"}
-      </button>
-    </form>
+    </div>
   );
 };
 
-export default LogForm;
+export default memo(LogForm);

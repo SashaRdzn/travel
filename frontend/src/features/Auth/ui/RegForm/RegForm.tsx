@@ -1,36 +1,21 @@
+import { Link } from "react-router-dom";
 import { useState, useCallback, memo, useMemo } from "react";
-import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 import styles from "./styles.module.scss";
 import { InputField } from "./ui/InputField";
-import { Link } from "react-router-dom";
 import { useRegister } from "../../model/Auth";
-import { useAuth } from "../../../../core/Store/authStore";
-
-interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { FormData } from "../../types";
 
 const RegForm = () => {
   const [formData, setFormData]:any = useState<FormData>({
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
- const { mutate: register } = useRegister();
- const user = useAuth((state) => state.user);
- console.log(user);
- 
+  const { mutate: register } = useRegister();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const validateUsername = useCallback((username: string): boolean => {
-    return username.length >= 3 && /^[a-zA-Z0-9]+$/.test(username);
-  }, []);
 
   const validateEmail = useCallback((email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -50,18 +35,11 @@ const RegForm = () => {
       const { name, value, type, checked } = e.target;
       const newValue = type === "checkbox" ? checked : value;
 
-      setFormData((prev:any) => ({
+      setFormData((prev: any) => ({
         ...prev,
         [name]: newValue,
       }));
-      if (name === "username") {
-        setErrors((prev) => ({
-          ...prev,
-          username: validateUsername(value as string)
-            ? ""
-            : "Имя пользователя — не твой старый аська-ник! Минимум 3 буквы/цифры.",
-        }));
-      } else if (name === "email") {
+       if (name === "email") {
         setErrors((prev) => ({
           ...prev,
           email: validateEmail(value as string)
@@ -85,7 +63,7 @@ const RegForm = () => {
         }));
       }
     },
-    [validateUsername, validateEmail, validatePassword, formData.password]
+    [ validateEmail, validatePassword, formData.password]
   );
 
   const handleTogglePassword = useCallback(() => {
@@ -100,8 +78,7 @@ const RegForm = () => {
       if (!hasErrors) {
         setLoading(true);
         try {
-          register(formData)
-          
+          register(formData);
         } catch (error) {
           console.error("Ошибка отправки:", error);
         } finally {
@@ -109,7 +86,7 @@ const RegForm = () => {
         }
       } else {
         setErrors((prev) => ({
-          ...prev
+          ...prev,
         }));
       }
     },
@@ -117,10 +94,7 @@ const RegForm = () => {
   );
 
   const isSubmitDisabled = useMemo(() => {
-    return (
-      loading ||
-      Object.values(errors).some((err) => err)
-    );
+    return loading || Object.values(errors).some((err) => err);
   }, [loading, errors]);
 
   return (
@@ -129,19 +103,7 @@ const RegForm = () => {
         <div className={styles.header}>
           <h2>Регистрация Чувааак😏</h2>
         </div>
-
         <form className={styles.form} onSubmit={handleSubmit}>
-          <InputField
-            id="username"
-            name="username"
-            type="text"
-            placeholder="Придумай крутой ник"
-            icon={FaUser}
-            error={errors.username}
-            value={formData.username}
-            onChange={handleInputChange}
-          />
-
           <InputField
             id="email"
             name="email"
@@ -167,7 +129,7 @@ const RegForm = () => {
             withStrength
           />
 
-          {/* <InputField
+          <InputField
             id="confirmPassword"
             name="confirmPassword"
             type="password"
@@ -178,7 +140,7 @@ const RegForm = () => {
             onChange={handleInputChange}
             showPassword={showPassword}
             onTogglePassword={handleTogglePassword}
-          /> */}
+          />
           <button
             type="submit"
             disabled={isSubmitDisabled}
@@ -211,7 +173,7 @@ const RegForm = () => {
           </button>
 
           <p className={styles.footer}>
-            Уже есть аккаунт?{" "}
+            Уже есть аккаунт?
             <Link type="button" className={styles.link} to={"/auth/login"}>
               Вход
             </Link>
