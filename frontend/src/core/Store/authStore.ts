@@ -1,26 +1,32 @@
 import { create } from "zustand";
-import { User } from "../../features/Auth/types";
-import { immer } from "zustand/middleware/immer";
+
+type User = {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+};
 
 type AuthState = {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
+  loginStore: (userData: User) => void;
+  logout: () => void;
 };
 
-type AuthActions = {
-  setUser: (user: User) => void;
-  setToken: (token: string) => void;
-  clearUser: () => void;
-};
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isAuthenticated: false,
 
-export const useAuth = create<AuthState & AuthActions>()(
-  immer((set) => ({
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    setUser: (user) => set({ user, isAuthenticated: !!user }),
-    setToken: (token) => set({ token }),
-    clearUser: () => set({ user: null, token: null, isAuthenticated: false }),
-  }))
-);
+  loginStore: (userData) =>
+    set({
+      user: userData,
+      isAuthenticated: true,
+    }),
+
+  logout: () =>
+    set({
+      user: null,
+      isAuthenticated: false,
+    }),
+}));

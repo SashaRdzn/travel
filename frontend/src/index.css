@@ -1,4 +1,3 @@
-
 :root {
   line-height: 1.5;
   font-weight: 400;
@@ -11,11 +10,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* //TODO Сделать на возможность выбора этого фона или взависмисти от вркемени года чтоб фон менялся */
+
+body {
+  /* background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/images/mainForm2.jpg") no-repeat center/cover fixed;
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  animation: fadeIn 1s ease-out; */
+  /* user-select: none; */
+  /* background-color: #242424; */
+}
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -43,9 +54,6 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
 }
 button:focus,
 button:focus-visible {

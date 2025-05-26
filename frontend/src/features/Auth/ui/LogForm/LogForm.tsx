@@ -1,31 +1,37 @@
-import { Link } from "react-router-dom";
-import { useState, useCallback, memo, useMemo, ChangeEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useCallback, memo, ChangeEvent, useMemo } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import styles from "../RegForm/styles.module.scss";
 import { InputField } from "../RegForm/ui/InputField";
 import { useLogin } from "../../model/Auth";
-import { FormData } from "../../types";
+import { ApiErrorResponse, FormDataForLogin } from "../../types";
+import { useAuthStore } from "../../../../core/Store/authStore";
+import { AxiosError } from "axios";
 
 const LogForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    email: "QWE@QWE.ru",
-    password: "ZXCzxc123!",
+  const { loginStore } = useAuthStore();
+  const [formData, setFormData] = useState<FormDataForLogin>({
+    email: "",
+    password: "",
   });
   const { mutate: login } = useLogin();
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[name];
+      return newErrors;
+    });
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-  }, []);
-
-  const handleTogglePassword = useCallback(() => {
-    setShowPassword((prev) => !prev);
   }, []);
 
   const handleSubmit = useCallback(
@@ -34,31 +40,47 @@ const LogForm = () => {
       setLoading(true);
 
       try {
-        await login(formData);
-      } catch (error: any) {
-        if (error.response?.data?.errors) {
-          setErrors(error.response.data.errors);
-        } else {
-          console.error("Login error:", error);
-        }
+        login(formData, {
+          onSuccess: (data) => {
+            loginStore(data.user);
+            navigate("/country");
+          },
+          onError: (error: AxiosError<ApiErrorResponse>) => {
+            if (error.response?.data?.error) {
+              setErrors({
+                email: error.response.data.error,
+                password: error.response.data.error,
+              });
+            } else {
+              setErrors({ general: "Произошла ошибка при входе" });
+            }
+          },
+        });
+      } catch (unexpectedError) {
+        setErrors({ general: "Непредвиденная ошибка" });
       } finally {
         setLoading(false);
       }
     },
-    [formData, login]
+    [formData, login, loginStore, navigate]
   );
 
-  const isSubmitDisabled = useMemo(() => {
-    return loading || !formData.email || !formData.password;
-  }, [loading, formData.email, formData.password]);
+  const loginLink = useMemo(
+    () => (
+      <Link to="/auth/register" className={styles.link}>
+        Регистрация
+      </Link>
+    ),
+    []
+  );
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={styles.formCard}>
         <div className={styles.header}>
           <h2>Вход</h2>
         </div>
-
+        asd@asd.ru
         <form className={styles.form} onSubmit={handleSubmit}>
           <InputField
             id="email"
@@ -74,24 +96,18 @@ const LogForm = () => {
           <InputField
             id="password"
             name="password"
-            type={showPassword ? "text" : "password"}
+            type="password"
             placeholder="Ваш пароль"
             icon={FaLock}
             error={errors.password}
             value={formData.password}
             onChange={handleInputChange}
-            showPassword={showPassword}
-            onTogglePassword={handleTogglePassword}
           />
-
           <button
+            aria-label="Вход"
             type="submit"
-            disabled={isSubmitDisabled}
-            className={`${styles.submitButton} ${
-              isSubmitDisabled
-                ? styles.submitButtonDisabled
-                : styles.submitButtonActive
-            }`}>
+            disabled={loading}
+            className={styles.submitButton}>
             {loading ? (
               <span className={styles.loadingSpinner}>
                 <svg className={styles.spinner} viewBox="0 0 24 24">
@@ -107,15 +123,18 @@ const LogForm = () => {
                 Входим...
               </span>
             ) : (
-              "Войти"
+              <>
+                <i>В</i>
+                <i>х</i>
+                <i>о</i>
+                <i>д</i>
+              </>
             )}
           </button>
 
           <p className={styles.footer}>
-            Нет аккаунта?
-            <Link to="/auth/register" className={styles.link}>
-              Зарегистрироваться
-            </Link>
+            <span>Нет аккаунта? </span>
+            {loginLink}
           </p>
         </form>
       </div>

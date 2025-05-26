@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { User } from "../types";
-import { useAuth } from "../../../core/Store/authStore";
+import { FormDataForLogin, AuthResponse, ApiError,  } from "../types";
 
 export const useRegister = () => {
   return useMutation({
@@ -10,23 +9,22 @@ export const useRegister = () => {
         `${import.meta.env.VITE_SERVER_URL_AUTH}register`,
         data
       );
-      return response.data as { user: User; token: string };
-    }
+      return response.data as { success: string };
+    },
   });
 };
 export const useLogin = () => {
-  const { setUser, setToken } = useAuth();
-  return useMutation({
-    mutationFn: async (data) => {
-      const response = await axios.post(
+  return useMutation<AuthResponse, ApiError, FormDataForLogin>({
+    mutationFn: async (data: FormDataForLogin) => {
+      const response = await axios.post<AuthResponse>(
         `${import.meta.env.VITE_SERVER_URL_AUTH}login`,
         data
       );
-      return response.data as { user: User; token: string };
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
-      
+      localStorage.setItem("access", data.tokens.access);
+      localStorage.setItem("refresh", data.tokens.refresh);
     },
   });
 };

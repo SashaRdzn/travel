@@ -18,19 +18,14 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
         return Response(
-            {
-                "success": "Регистрация прошла успешно",
-                "tokens": {
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                },
-            },
+            {"success": "Регистрация прошла успешно"},
             status=status.HTTP_201_CREATED,
         )
 
 
 class LoginUser(views.APIView):
     serializer_class = LoginSerializer
+
     def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         password = request.data.get("password")

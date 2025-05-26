@@ -2,19 +2,22 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = "django-insecure-_xd51%ao5#i^#313kdojs%g2q5kjoi^5h-+av*d13!fny(7@rq"
+
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.0.172"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.0.173", "192.168.0.172"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://192.168.0.173:5173",
     "http://192.168.0.172:5173",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
     "django.contrib.admin",

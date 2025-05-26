@@ -8,6 +8,7 @@
     -webkit-box-shadow: -1px 3px 52px 0px rgba(106, 202, 89, 0.2);
     -moz-box-shadow: -1px 3px 52px 0px rgba(106, 202, 89, 0.2);
     box-shadow:-1px 3px 52px 0px rgb(86 151 75 / 20%);
+    // background-color: rgb(22, 22,24);
 }
 
 .title {
@@ -16,7 +17,6 @@
     margin: 0;
     color: #c0bfbf;  
     cursor: pointer;
-    user-select: none;
     max-width: min-content;
     transition: all 0.3s ease;
     &:hover{
@@ -50,11 +50,9 @@
     object-fit: cover;
     transition: all 0.3s ease;
     cursor: pointer;
-    user-select: none;
 }
 
 .description {
-    user-select: none;
     cursor: pointer;
     position: absolute;
     bottom: 0;

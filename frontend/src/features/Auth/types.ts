@@ -1,11 +1,28 @@
-export type User = {
-  email: string;
-  password: string;
-  username?: string;
-};
+import { AxiosError } from "axios";
 
-export interface FormData {
+export interface FormDataForLogin {
   email: string;
   password: string;
-  confirmPassword: string;
 }
+
+export interface ITokens {
+  access: string;
+  refresh: string;
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+export interface AuthResponse {
+  user: IUser;
+  tokens: ITokens;
+}
+export interface ApiErrorResponse {
+  error?: string;
+}
+
+export type ApiError = AxiosError<ApiErrorResponse>;

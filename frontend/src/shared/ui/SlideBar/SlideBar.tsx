@@ -1,26 +1,20 @@
+// SlideBar.tsx
 import { memo, useMemo } from "react";
 import styles from "./styles.module.scss";
 import arrow from "../../../../public/svgs/Arrow.svg";
 import { useSlideBarStore } from "../../../core/Store/slideBarStore";
 
-type Position = "left" | "right" | "top" | "bottom";
+type Position = "left" | "right";
 
 interface SlideBarProps {
   children: React.ReactNode;
   position?: Position;
   width?: string;
-  height?: string;
   id: string;
 }
 
 const SlideBar = memo(
-  ({
-    children,
-    position = "right",
-    width = "300px",
-    height = "100vh",
-    id,
-  }: SlideBarProps) => {
+  ({ children, position = "right", width = "300px", id }: SlideBarProps) => {
     const isOpen = useSlideBarStore((state) => state.states[id] || false);
     const toggle = useSlideBarStore((state) => state.toggle);
 
@@ -43,13 +37,11 @@ const SlideBar = memo(
       const positionStyles = {
         left: { right: "-10px", top: "20px" },
         right: { left: "-10px", top: "20px" },
-        top: { bottom: "-10px", left: "50%" },
-        bottom: { top: "-10px", left: "50%" },
       };
 
       const rotation = isOpen
-        ? { left: 180, right: 0, top: 180, bottom: 0 }[position]
-        : { left: 0, right: 180, top: 0, bottom: 180 }[position];
+        ? { left: 180, right: 0 }[position]
+        : { left: 0, right: 180 }[position];
 
       return {
         ...baseStyles,
@@ -60,12 +52,13 @@ const SlideBar = memo(
 
     return (
       <div
-        className={`${styles.sidebar} ${isOpen ? styles["sidebar__open"] : ""}`}
+        className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}
         style={{
-          [position]: isOpen ? "0" : `calc(-${width} + 20px)`,
-          width: ["left", "right"].includes(position) ? width : "100vw",
-          height: ["top", "bottom"].includes(position) ? height : "100vh",
-          transition: "all 0.3s ease",
+          position: "fixed",
+          [position]: isOpen ? "0" : `-${width}`,
+          width,
+          height: "100vh",
+          transition: `${position} 0.3s ease`,
         }}>
         <div onClick={() => toggle(id)} style={arrowStyles}>
           <img

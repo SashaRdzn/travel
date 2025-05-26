@@ -1,26 +1,17 @@
 .sidebar {
-    position: fixed;
-    box-shadow: 0 0 15px rgba(44, 44, 44, 0.7);
     background-color: rgb(22, 22, 24);
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 15px rgba(44, 44, 44, 0.7);
     z-index: 1000;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 
-    &__open {}
+    &.open {}
 
-    &__close {
-        align-self: flex-end;
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
+    &.closed {}
 
     &__content {
         flex: 1;
+        overflow-y: auto;
     }
 }
