@@ -1,4 +1,4 @@
-import { useCountries } from "../model/Country";
+import { useCountries } from "../api/Country";
 import CountryCard from "./CountryCard";
 import { useCountryStore } from "../../../core/Store/countryStore";
 import { useEffect } from "react";
@@ -15,7 +15,6 @@ const CountryList = () => {
 
   return (
     <>
-      <h2>Страны</h2>
       {isPending && <div>Загрузка...</div>}
       {error && <div>Ошибка: {error.message}</div>}
       <section className={styles.wrapper}>

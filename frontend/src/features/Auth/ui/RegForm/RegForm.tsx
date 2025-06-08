@@ -3,7 +3,7 @@ import { useState, useCallback, memo, useMemo } from "react";
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import styles from "./styles.module.scss";
 import { InputField } from "./ui/InputField";
-import { useRegister } from "../../model/Auth";
+import { useRegister } from "../../api/Auth";
 import { FormDataForRegister } from "../../types";
 import toast from "react-hot-toast";
 

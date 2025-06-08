@@ -3,7 +3,7 @@ import { useState, useCallback, memo, ChangeEvent, useMemo } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import styles from "../RegForm/styles.module.scss";
 import { InputField } from "../RegForm/ui/InputField";
-import { useLogin } from "../../model/Auth";
+import { useLogin } from "../../api/Auth";
 import { ApiErrorResponse, FormDataForLogin } from "../../types";
 import { useAuthStore } from "../../../../core/Store/authStore";
 import { AxiosError } from "axios";

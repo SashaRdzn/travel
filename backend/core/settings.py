@@ -26,9 +26,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework_simplejwt",
     "rest_framework",
     "corsheaders",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "apps.catalog.apps.CatalogConfig",
     "apps.users.apps.UsersConfig",
 ]
@@ -45,7 +46,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "core.urls"
-
+SIMPLE_JWT = {
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+}
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",

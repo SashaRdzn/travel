@@ -17,16 +17,18 @@ type AuthState = {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
-
   loginStore: (userData) =>
     set({
       user: userData,
       isAuthenticated: true,
     }),
 
-  logout: () =>
-    set({
+  logout: () => {
+    set(state => ({
+      ...state,
       user: null,
       isAuthenticated: false,
-    }),
-}));
+    }));
+  }
+}
+));
